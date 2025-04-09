@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadSpeak: A Communication Hub for Student Leaders</title>
+    <!-- Link to Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif; /* Using Poppins font */
+            background-color: #000033; /* Dark Navy Blue */
+            color: #87CEEB; /* Sky Blue for text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* Prevent scrollbars */
+            position: relative;
+            padding: 20px; /* Add padding for smaller screens */
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 1; /* Ensure text is above squares */
+            border-radius: 10px; /* Rounded corners */
+            padding: 20px; /* Padding around the content */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+            border: 5px solid #3A4C75; /* Light Navy Blue border */
+            opacity: 0; /* Start hidden */
+            transform: scale(0.8); /* Start smaller */
+            animation: popUp 0.5s forwards; /* Pop-up animation */
+            max-width: 90%; /* Limit width for smaller screens */
+            margin: auto; /* Center the container */
+        }
+
+        @keyframes popUp {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            color: #FFFFFF; /* White for better contrast */
+            display: inline; /* Keep text inline for cursor effect */
+        }
+
+        p {
+            font-size: 1.5em;
+            margin-bottom: 2em;
+            color: #FFFFFF; /* White for better contrast */
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px; /* Width of the cursor */
+            height: 1em; /* Height of the cursor */
+            background-color: #FFFFFF; /* Cursor color */
+            animation: blink 0.7s step-end infinite; /* Blinking effect */
+            vertical-align: middle; /* Align cursor with text */
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .start-button {
+            background-color: #3A4C75; /* Steel Blue */
+            color: #FFFFFF; /* White for text */
+            border: none;
+            border-radius: 5px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow for 3D effect */
+            transform: translateY(0); /* Initial position */
+            animation: pulse 1.5s infinite; /* Pulsing animation */
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05); /* Slightly larger at the peak */
+            }
+        }
+
+        .start-button:hover {
+            background-color: #6A5ACD; /* Slate Blue on hover */
+            transform: translateY(-3px); /* Move up on hover */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Increase shadow on hover */
+        }
+
+        .start-button:active {
+            transform: translateY(1px); /* Move down on click */
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2); /* Decrease shadow on click */
+        }
+
+        /* Animation for squares */
+        .square {
+            position: absolute;
+            background-color: rgba(0, 128, 128, 0.5); /* Teal with lower transparency */
+            animation: appear 5s infinite; /* Increased duration to 5 seconds */
+            opacity: 0;
+        }
+
+        @keyframes appear {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2); /* Slightly larger at the peak */
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5em; /* Smaller font size for mobile */
+            }
+
+            p {
+                font-size: 1.2em; /* Smaller font size for mobile */
+            }
+
+            .start-button {
+                padding: 10px 20px; /* Adjust padding for mobile */
+                font-size: 1em; /* Smaller font size for mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title"></h1><span class="cursor" id="cursor"></span>
+        <p id="subtitle"></p>
+        <button class="start-button" onclick="location.href='index.html'">Start</button>
+    </div>
+
+    <script>
+        const titleText = "LeadSpeak";
+        const subtitleText = "A Communication Hub for Student Leaders";
+        const typingSpeed = 100; // Speed of typing in milliseconds
+
+        function typeWriter(element, text, speed, callback) {
+            let i = 0;
+            const cursor = document.getElementById('cursor');
+            cursor.style.display = 'inline'; // Show cursor at the start
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    cursor.style.display = 'none'; // Hide cursor after typing
+                    if (callback) {
+                        callback();
+                    }
+                }
+            }
+            type();
+        }
+
+        // Start typing animation
+        typeWriter(document.getElementById('title'), titleText, typingSpeed, () => {
+            typeWriter(document.getElementById('subtitle'), subtitleText, typingSpeed);
+        });
+
+        function createSquare() {
+            const square = document.createElement('div');
+            const size = Math.random() * 50 + 10; // Random size between 10px and 60px
+            square.className = 'square';
+            square.style.width = `${size}px`;
+            square.style.height = `${size}px`;
+            square.style.top = `${Math.random() * 100}vh`; // Random vertical position
+            square.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+            square.style.animationDuration = `${Math.random() * 3 + 3}s`; // Random duration between 3s and 6s
+            document.body.appendChild(square);
+
+            // Remove square after animation ends
+            square.addEventListener('animationend', () => {
+                square.remove();
+            });
+        }
+
+        // Create squares at intervals (increased to 2000ms for less frequency)
+        setInterval(createSquare, 2000); // Create a new square every 2000ms (2 seconds)
+    </script>
+</body>
+</html>

@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadSpeak: Main Interface</title>
+    <!-- Link to Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Link to Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+    
+        html {
+          scroll-behavior: smooth; /* Enable smooth scrolling */
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f0f0; /* Light background for contrast */
+            color: #333; /* Dark text color */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color:  #3A4C75; /* Header background color */
+            color: #FFFFFF; /* White text color */
+            padding: 10px 20px; /* Reduced padding for header */
+            position: fixed; /* Fix the header at the top */
+            top: 0; /* Align to the top */
+            left: 0; /* Align to the left */
+            width: 100%; /* Full width */
+            box-sizing: border-box; /* Include padding in width */
+            z-index: 2000; /* Higher z-index for header */
+        }
+
+        h1 {
+            margin: 0; /* Remove default margin */
+            font-size: 1.5em; /* Font size for header text */
+        }
+
+        .menu-icon {
+            font-size: 2em; /* Size of the icon */
+            cursor: pointer; /* Change cursor to pointer */
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .menu-icon:hover {
+            color: #87CEEB; /* Change color on hover */
+        }
+
+        .menu {
+            position: fixed;
+            top: 50px; /* Start below the header */
+            left: 0; /* Start from the left */
+            width: 250px; /* Width of the menu */
+            height: calc(100% - 50px); /* Full height minus header height */
+            background-color: #3A4C75; /* Menu background color */
+            color: #FFFFFF; /* White text color */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+            transition: transform 0.3s ease; /* Smooth transition */
+            transform: translateX(-100%); /* Hide menu off-screen */
+            padding: 20px; /* Padding for menu */
+            z-index: 1000; /* Ensure menu is below the header */
+        }
+
+        .menu.open {
+            transform: translateX(0); /* Slide in from the left */
+        }
+
+        .menu h2 {
+            font-size: 1.2em; /* Smaller font size for menu heading */
+            margin-bottom: 20px; /* Space below heading */
+        }
+
+        .menu-item {
+            display: flex; /* Use flexbox for alignment */
+            align-items: center; /* Center items vertically */
+            padding: 10px; /* Padding for each menu item */
+            border-radius: 5px; /* Rounded corners */
+            margin-bottom: 10px; /* Space between items */
+            color: #FFFFFF; /* White text color */
+            text-decoration: none; /* Remove underline from links */
+            border-bottom: 2px solid transparent; /* Transparent bottom border for spacing */
+            transition: border-color 0.3s, background-color 0.3s; /* Smooth transition for border and background */
+        }
+
+        .menu-item:hover {
+            border-bottom: 2px solid #87CEEB; /* Change bottom border color on hover */
+        }
+
+        .menu-item:active {
+            border-left: 4px solid #87CEEB; /* Add left border on active */
+            background-color: rgba(135, 206, 235, 0.1); /* Optional: Add a slight background color on active */
+        }
+
+        .menu-item .material-icons {
+            margin-right: 10px; /* Space between icon and text */
+        }
+
+        .content {
+            padding: 70px 20px 20px; /* Padding for content, add top padding for fixed header */
+            text-align: center; /* Center the content */
+        }
+
+        .interactive-guide {
+            margin-top: 20px; /* Space above the guide section */
+            background-color: #ffffff; /* White background for the guide */
+            padding: 20px; /* Padding for the guide */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            text-align: left; /* Align text to the left */
+        }
+
+        .video-container {
+            margin: 15px 0; /* Space between video containers */
+            padding: 10px; /* Padding for each video container */
+            border: 1px solid #ddd; /* Border for each container */
+            border-radius: 5px; /* Rounded corners */
+            background-color: #f9f9f9; /* Light background for video containers */
+            cursor: pointer; /* Change cursor to pointer */
+            transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for transform and shadow */
+        }
+
+        .video-container:hover {
+            transform: scale(1.05); /* Slightly scale up on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+            z-index: 1; /* Bring the hovered item to the front */
+        }
+
+        /* Adjust margins for adjacent elements */
+        .video-container + .video-container {
+            margin-top: 20px; /* Add space between video containers */
+        }
+
+        .video-cover {
+            width: 100%; /* Full width */
+            height: 150px; /* Fixed height for cover */
+            background-color: #ccc; /* Placeholder color for cover */
+            border-radius: 5px; /* Rounded corners */
+            margin-bottom: 10px; /* Space below the cover */
+            display: flex; /* Center content */
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            color: #333; /* Text color for cover */
+            font-weight: bold; /* Bold text */
+            background-size: cover; /* Cover the entire area */
+            background-position: center; /* Center the image */
+        }
+
+        .video-link {
+            display: block; /* Make links block elements */
+            color: #3A4C75; /* Link color */
+            text-decoration: none; /* Remove underline */
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .video-link:hover {
+            color: #87CEEB; /* Change color on hover */
+        }
+
+        .resources-section {
+            margin-top: 40px; /* Space above resources section */
+            background-color: #ffffff; /* White background for resources */
+            padding: 20px; /* Padding for resources */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            text-align: left; /* Align text to the left */
+        }
+
+        .resource-item {
+            margin: 10px 0; /* Space between resource items */
+            padding: 10px; /* Padding for each resource item */
+            border: 1px solid #ddd; /* Border for each container */
+            border-radius: 5px; /* Rounded corners */
+            background-color: #f9f9f9; /* Light background for resource items */
+            display: flex; /* Use flexbox for alignment */
+            justify-content: space-between; /* Space between text and buttons */
+            align-items: center; /* Center items vertically */
+        }
+
+        .resource-icon {
+            font-size: 50px; /* Size of the icon */
+            color: #3A4C75; /* Icon color */
+            margin-right: 10px; /* Space between icon and text */
+        }
+
+        .resource-link {
+            color: #3A4C75; /* Link color */
+            text-decoration: none; /* Remove underline */
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .resource-link:hover {
+            color: #87CEEB; /* Change color on hover */
+        }
+
+        .resource-actions {
+            display: flex; /* Use flexbox for alignment */
+            gap: 10px; /* Space between buttons */
+        }
+
+        .view-button, .download-button {
+            background-color: #4A6E9D; /* Background color for buttons */
+            color: #FFFFFF; /* White text color */
+            border: none; /* Remove border */
+            padding: 5px 10px; /* Padding for buttons */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Change cursor to pointer */
+            transition: background-color 0.3s; /* Smooth background color transition */
+        }
+
+        .view-button:hover, .download-button:hover {
+            background-color: #87CEEB; /* Change background color on hover */
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column; /* Stack header items vertically */
+                align-items: flex-start; /* Align items to the start */
+            }
+
+            h1 {
+                font-size: 0.7em; /* Smaller font size for header */
+            }
+
+            .menu {
+                /* No need to hide the menu, it will be toggled */
+            }
+
+            .menu-icon {
+                font-size: 1.5em; /* Smaller icon size */
+            }
+
+            .content {
+                padding: 70px 15px 15px; /* Adjust padding for fixed header */
+            }
+
+            .resource-item {
+                flex-direction: column; /* Stack text and buttons vertically */
+                align-items: center; /* Center items horizontally */
+                text-align: center; /* Center text */
+                font-size: 0.9em; /* Decrease text size */
+            }
+
+            .resource-icon {
+                margin: 0; /* Remove margin for mobile */
+                text-align: center; /* Center icon */
+            }
+
+            .resource-actions {
+                justify-content: center; /* Center actions */
+                margin-top: 10px; /* Space above actions */
+            }
+            
+            .video-links-container {
+              flex-direction: column; /* Stack items vertically */
+              align-items: stretch; /* Make items take full width */
+              width: 100%; /* Ensure the container takes full width */
+              max-width: 100%; /* Prevent overflow */
+              padding: 0 10px; /* Add some padding to the sides */
+              box-sizing: border-box; /* Include padding in width calculation */
+            }
+            
+            .video-container {
+              width: 100%; /* Make each video container take full width */
+              margin: 10px 0; /* Add vertical spacing between items */
+              box-sizing: border-box; /* Include padding and border in width calculation */
+            }
+        }
+
+        @media (min-width: 769px) {
+            /* Desktop layout: 3 columns for videos and resources */
+            .video-container, .resource-item {
+                width: calc(30% - 20px); /* 3 columns layout */
+                margin: 10px; /* Space between items */
+                display: inline-block; /* Display as inline-block */
+                vertical-align: top; /* Align to the top */
+            }
+        }
+
+        /* Indentation for paragraphs */
+        p {
+            text-indent: 20px; /* Indent the first line of each paragraph */
+            margin: 10px 0; /* Space above and below paragraphs */
+        }
+
+        /* Centered container for video links */
+        .video-links-container {
+          display: flex; /* Use flexbox for alignment */
+          justify-content: flex-start; /* Align items to the left */
+          flex-wrap: wrap; /* Allow wrapping of items */
+          max-width: 1200px; /* Set a max width for the container */
+          margin: 0 auto; /* Center the container */
+        }
+        
+        .survey-counter {
+            margin-top: 20px; /* Space above the survey section */
+            background-color: #ffffff; /* White background for the survey */
+            padding: 20px; /* Padding for the survey */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+        }
+
+        .progress-container {
+            display: flex; /* Use flexbox for alignment */
+            align-items: center; /* Center items vertically */
+            margin-bottom: 10px; /* Space below the progress bar */
+        }
+
+        .progress-bar {
+            width: 100%; /* Full width */
+            height: 10px; /* Height of the progress bar */
+            background-color: #e0e0e0; /* Background color of the bar */
+            border-radius: 5px; /* Rounded corners */
+            margin-right: 10px; /* Space between bar and text */
+            position: relative; /* Position for inner fill */
+        }
+
+        .progress-bar::after {
+            content: ''; /* Empty content for the fill */
+            display: block; /* Block element */
+            height: 100%; /* Full height */
+            background-color: #76c7c0; /* Fill color */
+            border-radius: 5px; /* Rounded corners */
+            width: 0%; /* Start with 0% width */
+            transition: width 0.3s; /* Smooth transition */
+        }
+
+        /* Existing CSS styles remain unchanged */
+        .questions-container {
+            display: flex; /* Use flexbox for alignment */
+            flex-wrap: wrap; /* Allow wrapping of items */
+            margin-top: 15px; /* Space above the questions container */
+            padding: 15px; /* Padding for the questions container */
+            border: 1px solid #ddd; /* Border for the container */
+            border-radius: 5px; /* Rounded corners */
+            background-color: #f9f9f9; /* Light background for the container */
+        }
+
+        .question-container {
+            position: relative; /* Ensure the question container is positioned for the clear icon */
+            flex: 1 1 calc(33.33% - 20px); /* 3 columns layout with space */
+            margin: 10px; /* Space between questions */
+            padding: 10px; /* Padding for each question container */
+            border: 1px solid #ccc; /* Border for each question */
+            border-radius: 5px; /* Rounded corners */
+            background-color: #ffffff; /* White background for each question */
+            box-sizing: border-box; /* Include padding and border in width calculation */
+            display: flex; /* Use flexbox for centering */
+            flex-direction: column; /* Stack items vertically */
+            align-items: flex-start; /* Align items to the left */
+            justify-content: flex-start; /* Align items to the top */
+        }
+
+        .question-container p {
+            margin-top: 40px; /* Add margin to the top to avoid overlap with the clear icon */
+            margin-left: 10px; /* Indent the text */
+            text-align: left; /* Align text to the left */
+        }
+
+        .button-container {
+            margin: 10px 0; /* Space above and below the button container */
+            display: flex; /* Use flexbox for alignment */
+            justify-content: center; /* Center the buttons */
+            width: 100%; /* Full width for the button container */
+        }
+
+        .agree-icon, .disagree-icon {
+            cursor: pointer; /* Change cursor to pointer */
+            margin: 0 10px; /* Space between icons */
+            font-size: 24px; /* Adjust icon size */
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .response-animation {
+            position: relative; /* Position for animation */
+            height: 40px; /* Set height for animation */
+            width: 40px; /* Set width for animation */
+            display: flex; /* Center the animation */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+
+        .animated-check, .animated-cross {
+            font-size: 40px; /* Size of the animated icons */
+            position: absolute; /* Position for animation */
+            opacity: 0; /* Start with invisible */
+            animation: fadeIn 0.5s forwards; /* Fade in animation */
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0; /* Start invisible */
+                transform: scale(0.5); /* Start small */
+            }
+            100% {
+                opacity: 1; /* Fully visible */
+                transform: scale(1); /* Normal size */
+            }
+        }
+
+        .animate .animated-check {
+            animation: checkAnimation 0.5s forwards; /* Checkmark animation */
+        }
+
+        .animate .animated-cross {
+            animation: crossAnimation 0.5s forwards; /* Cross animation */
+        }
+
+        @keyframes checkAnimation {
+            0% {
+                transform: scale(1); /* Start normal size */
+            }
+            100% {
+                transform: scale(1.5); /* Grow larger */
+            }
+        }
+
+        @keyframes crossAnimation {
+            0% {
+                transform: scale(1); /* Start normal size */
+            }
+            100% {
+                transform: scale(1.5); /* Grow larger */
+            }
+        }
+
+        .clear-icon {
+            cursor: pointer; /* Change cursor to pointer */
+            position: absolute; /* Position it in the corner */
+            top: 10px; /* Distance from the top */
+            right: 10px; /* Distance from the right */
+            color: #ff0000; /* Color of the clear icon */
+            font-size: 24px; /* Size of the icon */
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .clear-icon:hover {
+            color: #ff4d4d; /* Change color on hover */
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .questions-container {
+                padding: 0; /* Remove padding for mobile */
+            }
+
+            .question-container {
+                flex: 1 1 100%; /* 1 column layout for mobile */
+                margin: 5px 0; /* Space between questions */
+            }
+        }
+
+        .animated-word {
+            font-size: 24px; /* Default size for larger screens */
+            color: #76c7c0; /* Color of the words */
+            position: absolute; /* Position for animation */
+            opacity: 0; /* Start with invisible */
+            animation: fadeIn 0.5s forwards, moveUp 0.5s forwards; /* Fade in and move up animation */
+            white-space: nowrap; /* Prevent line breaks */
+        }
+
+        /* Media query for mobile devices */
+        @media (max-width: 600px) {
+            .animated-word {
+                font-size: 16px; /* Smaller size for mobile */
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0; /* Start invisible */
+                transform: translateY(20px); /* Start below */
+            }
+            100% {
+                opacity: 1; /* Fully visible */
+                transform: translateY(0); /* Move to original position */
+            }
+        }
+
+        @keyframes moveUp {
+            0% {
+                transform: translateY(0); /* Start at original position */
+            }
+            100% {
+                transform: translateY(-30px); /* Move up */
+            }
+        }
+
+        .button-container {
+            margin-top: 20px; /* Space above the button container */
+            text-align: center; /* Center the button */
+        }
+
+        .submit-button {
+            background-color: #4A6E9D; /* Background color for the button */
+            color: #FFFFFF; /* White text color */
+            border: none; /* Remove border */
+            padding: 10px 20px; /* Padding for the button */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Change cursor to pointer */
+            font-size: 1em; /* Font size */
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition for background color and transform */
+        }
+
+        .submit-button:hover {
+            background-color: #87CEEB; /* Change background color on hover */
+            transform: scale(1.05); /* Slightly scale up on hover */
+        }
+
+        .submit-button:active {
+            transform: scale(0.95); /* Slightly scale down on click */
+        }
+
+        .results-container {
+            margin: 20px auto; /* Center the container with auto margins */
+            padding: 20px; /* Padding for the results container */
+            background-color: #ffffff; /* White background */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            text-align: center; /* Center the text */
+            animation: fadeIn 0.5s ease; /* Fade-in animation */
+            max-width: 90%; /* Maximum width for the container */
+            overflow: hidden; /* Prevent overflow */
+        }
+
+        .congratulations {
+            font-size: 2em; /* Larger font size for the congratulations message */
+            color: #4A6E9D; /* Color for the congratulations text */
+            margin-bottom: 10px; /* Space below the heading */
+        }
+
+        .result-message {
+            font-size: 1.2em; /* Font size for the results */
+            color: #333; /* Darker text color for readability */
+        }
+
+        /* Fireworks container */
+        .fireworks {
+            display: none; /* Initially hidden */
+            position: absolute; /* Position for fireworks */
+            width: 100%; /* Full width */
+            height: 200px; /* Height for fireworks */
+            background-image: url('path_to_fireworks_image.png'); /* Replace with your fireworks image */
+            background-size: cover; /* Cover the entire area */
+            animation: explode 1s forwards; /* Animation for fireworks */
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px); /* Slide in from above */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Media Queries for Mobile Responsiveness */
+        @media (max-width: 600px) {
+            .results-container {
+                padding: 15px; /* Reduce padding on mobile */
+                max-width: 95%; /* Allow more width on smaller screens */
+            }
+
+            .congratulations {
+                font-size: 1.5em; /* Smaller font size for mobile */
+            }
+
+            .result-message {
+                font-size: 1em; /* Smaller font size for mobile */
+            }
+        }
+
+        .question-container {
+            position: relative; /* Ensure the question container is positioned for the clear icon */
+            flex: 1 1 calc(33.33% - 20px); /* 3 columns layout with space */
+            margin: 10px; /* Space between questions */
+            padding: 10px; /* Padding for each question container */
+            border: 1px solid #ccc; /* Border for each question */
+            border-radius: 5px; /* Rounded corners */
+            background-color: #ffffff; /* White background for each question */
+            box-sizing: border-box; /* Include padding and border in width calculation */
+            display: flex; /* Use flexbox for centering */
+            flex-direction: column; /* Stack items vertically */
+            align-items: flex-start; /* Align items to the left */
+            justify-content: flex-start; /* Align items to the top */
+        }
+
+        .question-icon {
+            font-size: 36px; /* Adjust size as needed */
+            color: #3A4C75; /* Color of the icon */
+            margin-right: 10px; /* Space between icon and text */
+            animation: bounce 1s infinite; /* Apply bounce animation */
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0); /* Original position */
+            }
+            40% {
+                transform: translateY(-10px); /* Move up */
+            }
+            60% {
+                transform: translateY(-5px); /* Move down slightly */
+            }
+        }
+        
+        @keyframes pop-in {
+            0% {
+                transform: scale(0.5); /* Start smaller */
+                opacity: 0; /* Start invisible */
+            }
+            100% {
+                transform: scale(1); /* End at normal size */
+                opacity: 1; /* End fully visible */
+            }
+        }
+
+        .image-container img {
+            animation: pop-in 0.5s ease forwards; /* Apply the pop-in animation */
+            margin: 10px; /* Space between images */
+            width: 100px; /* Adjust size as needed */
+        }
+        
+/* Modal Styles */
+.modal {
+    display: flex; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 50px;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* Center the modal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%; /* Full width on mobile */
+    max-width: 400px; /* Max width for larger screens */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    animation: pop-in 0.5s ease forwards; /* Pop-in animation */
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="password"] {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding for inputs */
+    margin: 10px 0; /* Space between inputs */
+    border: 1px solid #ccc; /* Border for inputs */
+    border-radius: 4px; /* Rounded corners */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.button-container {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center items horizontally */
+    margin-top: 10px; /* Space above buttons */
+}
+
+.button-container button {
+    flex: 1; /* Allow buttons to grow equally */
+    margin: 0 5px; /* Add horizontal margin for spacing */
+}
+
+/* Button Styles */
+button {
+    background-color: #4A6E9D; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    padding: 10px; /* Padding for buttons */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to pointer */
+    flex: 1; /* Allow buttons to grow equally */
+    margin: 0 5px; /* Space between buttons */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+button:hover {
+    background-color: #87CEEB; /* Change background color on hover */
+}
+
+/* Pop-in Animation */
+@keyframes pop-in {
+    0% {
+        opacity: 0; /* Start invisible */
+        transform: scale(0.5); /* Start smaller */
+    }
+    100% {
+        opacity: 1; /* Fully visible */
+        transform: scale(1); /* End at normal size */
+    }
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 600px) {
+    .modal{
+      top: 60px;
+    }
+    
+    .modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* Center the modal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Full width on mobile */
+    max-width: 400px; /* Max width for larger screens */
+    max-height: 70vh; /* Set a maximum height for mobile */
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+}
+
+    button {
+        width: 100%; /* Full width for buttons on mobile */
+        margin: 10px 0; /* Space between buttons */
+    }
+}
+
+/* Button Styles */
+.submit-button {
+    background-color: #4A6E9D; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Padding for buttons */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to pointer */
+    width: auto; /* Set width to auto for a shorter button */
+    max-width: 150px; /* Set a maximum width for the button */
+    display: block; /* Make it a block element */
+    margin: 0 auto; /* Center the button */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.submit-button:hover {
+    background-color: #87CEEB; /* Change background color on hover */
+}
+
+/* Social Button Styles */
+.social-login {
+    margin-top: 20px; /* Space above social login section */
+    text-align: center; /* Center the text */
+}
+
+.social-button {
+    background-color: #f0f0f0; /* Light background for social buttons */
+    color: #333; /* Text color */
+    border: 1px solid #ccc; /* Border for buttons */
+    padding: 10px; /* Padding for buttons */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to pointer */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    margin: 5px 0; /* Space between buttons */
+    width: 100%; /* Full width */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.social-button:hover {
+    background-color: #e0e0e0; /* Change background color on hover */
+}
+
+.social-button i {
+    margin-right: 8px; /* Space between icon and text */
+    font-size: 20px; /* Adjust icon size */
+}
+
+.welcome-message {
+            display: none; /* Hidden by default */
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+#toggleText {
+    cursor: pointer; /* Change cursor to pointer */
+    color: blue; /* Text color */
+    text-align: center; /* Center the text */
+    font-size: 0.8em; /* Make the text smaller */
+    margin-top: 10px; /* Add some space above */
+}
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>LeadSpeak: A Communication Hub for Student Leaders</h1>
+        <span class="material-icons menu-icon" title="Menu" onclick="toggleMenu()">menu</span>
+    </header>
+
+    <div class="menu" id="menu">
+        <h2>Menu</h2>
+        <a href="#interactive-guide" class="menu-item">
+            <span class="material-icons">help_outline</span>
+            Interactive Guide
+        </a>
+        <a href="#online-survey" class="menu-item">
+            <span class="material-icons">assignment</span>
+            Online Survey
+        </a>
+        <a href="#resources-page" class="menu-item">
+            <span class="material-icons">folder_open</span>
+            Resources Page
+        </a>
+        <a href="#" class="menu-item">
+            <span class="material-icons">info</span>
+            About
+        </a>
+        <a href="#" class="menu-item" id="logoutButton">
+            <span class="material-icons">logout</span>
+            Logout
+        </a>
+    </div>
+
+    <div class="content">
+        <h2>Welcome to LeadSpeak!</h2>
+        <p>Your platform for effective communication and leadership.</p>
+
+        <div class="interactive-guide" id="interactive-guide">
+            <h3>Interactive Guide on Communication Styles</h3>
+            <p>This guide provides an overview of various communication styles, helping you understand how to effectively convey your message and connect with others. Explore different approaches to communication to enhance your interactions.</p>
+            <div class="video-links-container">
+                <div class="video-container" onclick="playVideo('rtcrvPZjLtM')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/rtcrvPZjLtM/hqdefault.jpg');">Video 1</div>
+                    <a href="#" class="video-link">Video 1: Communication Styles Overview</a>
+                </div>
+                <div class="video-container" onclick="playVideo('O3loIV3Z9MQ')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/O3loIV3Z9MQ/hqdefault.jpg');">Video 2</div>
+                    <a href="#" class="video-link">Video 2: Effective Communication</a>
+                </div>
+                <div class="video-container" onclick="playVideo('IEUjZiO5vmg')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/IEUjZiO5vmg/hqdefault.jpg');">Video 3</div>
+                    <a href="#" class="video-link">Video 3: Nonverbal Communication</a>
+                </div>
+                <div class="video-container" onclick="playVideo('eIho2S0ZahI')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/eIho2S0ZahI/hqdefault.jpg');">Video 4</div>
+                    <a href="#" class="video-link">Video 4: Active Listening</a>
+                </div>
+                <div class="video-container" onclick="playVideo('g7uZyXH0qQo')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/g7uZyXH0qQo/hqdefault.jpg');">Video 5</div>
+                    <a href="#" class="video-link">Video 5: Conflict Resolution</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="interactive-guide">
+            <h3>How to Become an Effective Leader</h3>
+            <p>This section offers insights and strategies for developing your leadership skills. Learn the essential qualities of effective leaders and how to inspire and motivate your team.</p>
+            <div class="video-links-container">
+                <div class="video-container" onclick="playVideo('R2qu_j6GAG8')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/R2qu_j6GAG8/hqdefault.jpg');">Video 1</div>
+                    <a href="#" class="video-link">Video 1: Leadership Essentials</a>
+                </div>
+                <div class="video-container" onclick="playVideo('oRTKJ3CcOMM')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/oRTKJ3CcOMM/hqdefault.jpg');">Video 2</div>
+                    <a href="#" class="video-link">Video 2: Building Trust</a>
+                </div>
+                <div class="video-container" onclick="playVideo('61OzhSrgsd8')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/61OzhSrgsd8/hqdefault.jpg');">Video 3</div>
+                    <a href="#" class="video-link">Video 3: Vision and Strategy</a>
+                </div>
+                <div class="video-container" onclick="playVideo('AN0ILTR-fC4')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/AN0ILTR-fC4/hqdefault.jpg');">Video 4</div>
+                    <a href="#" class="video-link">Video 4: Decision Making</a>
+                </div>
+                <div class="video-container" onclick="playVideo('dIYmzf21d1g')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/dIYmzf21d1g/hqdefault.jpg');">Video 5</div>
+                    <a href="#" class="video-link">Video 5: Communication Skills</a>
+                </div>
+                <div class="video-container" onclick="playVideo('aUYSDEYdmzw')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/aUYSDEYdmzw/hqdefault.jpg');">Video 6</div>
+                    <a href="#" class="video-link">Video 6: Conflict Management</a>
+                </div>
+                <div class="video-container" onclick="playVideo('WgxcznI1cpo')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/WgxcznI1cpo/hqdefault.jpg');">Video 7</div>
+                    <a href="#" class="video-link">Video 7: Team Building</a>
+                </div>
+                <div class="video-container" onclick="playVideo('eXDNkwIeOqA')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/eXDNkwIeOqA/hqdefault.jpg');">Video 8</div>
+                    <a href="#" class="video-link">Video 8: Leading Change</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="interactive-guide">
+            <h3>Communication Tips for Effective Leadership</h3>
+            <p>Discover practical tips and techniques to enhance your communication skills as a leader. This section focuses on the importance of clear communication in fostering collaboration and achieving goals.</p>
+            <div class="video-links-container">
+                <div class="video-container" onclick="playVideo('mhfamv6XnrQ')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/mhfamv6XnrQ/hqdefault.jpg');">Video 1</div>
+                    <a href="#" class="video-link">Video 1: Effective Communication Strategies</a>
+                </div>
+                <div class="video-container" onclick="playVideo('hAxCpAnV3-E')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/hAxCpAnV3-E/hqdefault.jpg');">Video 2</div>
+                    <a href="#" class="video-link">Video 2: The Art of Listening</a>
+                </div>
+                <div class="video-container" onclick="playVideo('MxVvs8BTytk')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/MxVvs8BTytk/hqdefault.jpg');">Video 3</div>
+                    <a href="#" class="video-link">Video 3: Communicating with Confidence</a>
+                </div>
+                <div class="video-container" onclick="playVideo('1JRmIWNgpKA')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/1JRmIWNgpKA/hqdefault.jpg');">Video 4</div>
+                    <a href="#" class="video-link">Video 4: Nonverbal Communication</a>
+                </div>
+                <div class="video-container" onclick="playVideo('3lOXf7Suy84')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/3lOXf7Suy84/hqdefault.jpg');">Video 5</div>
+                    <a href="#" class="video-link">Video 5: Building Rapport</a>
+                </div>
+                <div class="video-container" onclick="playVideo('6xu7zRaJUjE')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/6xu7zRaJUjE/hqdefault.jpg');">Video 6</div>
+                    <a href="#" class="video-link">Video 6: Feedback Techniques</a>
+                </div>
+                <div class="video-container" onclick="playVideo('NQN4mtTagL0')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/NQN4mtTagL0/hqdefault.jpg');">Video 7</div>
+                    <a href="#" class="video-link">Video 7: Conflict Resolution in Leadership</a>
+                </div>
+                <div class="video-container" onclick="playVideo('6wN8OGngtFQ')">
+                    <div class="video-cover" style="background-image: url('https://img.youtube.com/vi/6wN8OGngtFQ/hqdefault.jpg');">Video 8</div>
+                    <a href="#" class="video-link">Video 8: Inspiring Others Through Communication</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="resources-section" id="resources-page">
+            <h3>Resources Page</h3>
+            <p>Access a variety of resources designed to support your growth as a leader. From articles to guides, these materials provide valuable insights into effective communication and leadership practices.</p>
+            <div class="video-links-container">
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Communication Guidebook (PDF)</p>
+                    <div class="resource-actions">
+                        <a href="https://www.scirp.org/journal/paperinformation?paperid=107818" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <a href="https://www.scirp.org/journal/paperinformation?paperid=107818" download>
+                            <button class="download-button">Download PDF</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Effective Communication - The Key to Success</p>
+                    <div class="resource-actions">
+                        <a href="https://www.abacademies.org/articles/effective-communication-the-key-to-success-16363.html" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <a href="https://www.abacademies.org/articles/effective-communication-the-key-to-success-16363.html" download>
+                            <button class="download-button">Download Article</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Types of Communication Styles</p>
+                    <div class="resource-actions">
+                        <a href="https://www.snhu.edu/about-us/newsroom/liberal-arts/types-of-communication-styles" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Characteristics of a Good Leader</p>
+                    <div class="resource-actions">
+                        <a href="https://www.ccl.org/articles/leading-effectively-articles/characteristics-good-leader/" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>How to Be a Better Leader</p>
+                    <div class="resource-actions">
+                        <a href="https://www.gallup.com/cliftonstrengths/en/356072/how-to-be-better-leader.aspx" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Leadership and Communication</p>
+                    <div class="resource-actions">
+                        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9182262/" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9182262/" download>
+                            <button class="download-button">Download Article</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>6 Ways to Succeed as a Leader</p>
+                    <div class="resource-actions">
+                        <a href="https://www.ccl.org/articles/leading-effectively-articles/6-ways-to-succeed-as-a-leader/" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Why Communication is Essential for Effective Leadership</p>
+                    <div class="resource-actions">
+                        <a href="https://lpsonline.sas.upenn.edu/features/why-communication-essential-effective-leadership" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Communication Tips for Leaders</p>
+                    <div class="resource-actions">
+                        <a href="https://www.ccl.org/articles/leading-effectively-articles/communication-1-idea-3-facts-5-tips/" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>The Role of Communication in Leadership</p>
+                    <div class="resource-actions">
+                        <a href="https://ccaps.umn.edu/story/role-communication-leadership" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Importance of Communication Skills in Leadership</p>
+                    <div class="resource-actions">
+                        <a href="https://emeritus.org/in/learn/why-are-communication-skills-necessary-for-good-leadership/" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>How Great Leaders Communicate</p>
+                    <div class="resource-actions">
+                        <a href="https://hbr.org/2022/11/how-great-leaders-communicate" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Importance of Communication in Leadership</p>
+                    <div class="resource-actions">
+                        <a href="https://entrepreneurship.babson.edu/why-is-communication-important-in-leadership/" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Effective Communication for Leaders</p>
+                    <div class="resource-actions">
+                        <a href="https://www.forbes.com/councils/forbescoachescouncil/2023/07/21/effective-communication-how-leaders-can-inspire-engage-and-succeed/" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Leadership Communication Insights</p>
+                    <div class="resource-actions">
+                        <a href="https://www.yourthoughtpartner.com/blog/leadership-communication" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <span class="material-icons resource-icon">article</span>
+                    <p>Leadership Communication Strategies</p>
+                    <div class="resource-actions">
+                        <a href="https://elmlearning.com/hub/leadership-culture/leadership-communication/" target="_blank">
+                            <button class="view-button">View</button>
+                        </a>
+                        <span>Not downloadable</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="interactive-guide" id="online-survey">
+            <h3>Online Survey Assessment of Communication Styles</h3>
+            <p>Choices: Guilty means (Agree) or Not Guilty means (Disagree)</p>
+            <p>- Help Student Leaders Identify their communication style</p>
+
+            <!-- Passive Communication Styles -->
+            <div class="survey-counter">
+                <h4>1. Passive Communication Styles</h4>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar-passive"></div>
+                    <span id="response-count-passive">0/5</span>
+                </div>
+                <div class="questions-container">
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'passive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline </span>
+                        <p>I often avoid expressing my opinions during meetings.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'passive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'passive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'passive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I find it hard to say no to others.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'passive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'passive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'passive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often feel overlooked in group discussions.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'passive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'passive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'passive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often let others make decisions for me.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'passive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'passive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'passive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often feel anxious about expressing my thoughts.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'passive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'passive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assertive Communication Styles -->
+            <div class="survey-counter">
+                <h4>2. Assertive Communication Styles</h4>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar-assertive"></div>
+                    <span id="response-count-assertive">0/5</span>
+                </div>
+                <div class="questions-container">
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'assertive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I express my opinions confidently.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'assertive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'assertive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'assertive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I can say no without feeling guilty.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'assertive')">check_circle</span> <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'assertive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'assertive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I actively participate in discussions.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'assertive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'assertive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'assertive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I can express my needs clearly.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'assertive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'assertive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'assertive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I stand up for my rights in a respectful way.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'assertive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'assertive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aggressive Communication Styles -->
+            <div class="survey-counter">
+                <h4>3. Aggressive Communication Styles</h4>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar-aggressive"></div>
+                    <span id="response-count-aggressive">0/5</span>
+                </div>
+                <div class="questions-container">
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'aggressive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often interrupt others when they speak.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'aggressive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'aggressive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'aggressive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often raise my voice when I am upset.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'aggressive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'aggressive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'aggressive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often blame others for my problems.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'aggressive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'aggressive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                                        <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'aggressive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often use aggressive language when speaking.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'aggressive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'aggressive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'aggressive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often try to dominate conversations.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'aggressive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'aggressive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passive Aggressive Communication Styles -->
+            <div class="survey-counter">
+                <h4>4. Passive Aggressive Communication Styles</h4>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar-passiveAggressive"></div>
+                    <span id="response-count-passiveAggressive">0/5</span>
+                </div>
+                <div class="questions-container">
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'passiveAggressive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often give the silent treatment when I'm upset.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'passiveAggressive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'passiveAggressive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'passiveAggressive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often make sarcastic comments when I'm upset.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'passiveAggressive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'passiveAggressive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'passiveAggressive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often procrastinate when I don't want to do something.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'passiveAggressive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'passiveAggressive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'passiveAggressive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often make excuses when I don't want to do something.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'passiveAggressive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'passiveAggressive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'passiveAggressive')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often avoid direct confrontation.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'passiveAggressive')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'passiveAggressive')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collaborative Communication Styles -->
+            <div class="survey-counter">
+                <h4>5. Collaborative Communication Styles</h4>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar-collaborative"></div>
+                    <span id="response-count-collaborative">0/5</span>
+                </div>
+                <div class="questions-container">
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'collaborative')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often seek input from others when making decisions.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'collaborative')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'collaborative')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'collaborative')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often try to find mutually beneficial solutions.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'collaborative')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'collaborative')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'collaborative')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often listen actively to others.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'collaborative')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'collaborative')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'collaborative')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often try to build consensus.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'collaborative')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'collaborative')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                    <div class="question-container">
+                        <span class="material-icons clear-icon" onclick="clearResponse(this, 'collaborative')">clear</span>
+                        <span class="material-icons question-icon bounce">help_outline</span>
+                        <p>I often value the input of others.</p>
+                        <div class="button-container">
+                            <span class="material-icons agree-icon" onclick="handleResponse(this, 'agree', 'collaborative')">check_circle</span>
+                            <span class="material-icons disagree-icon" onclick="handleResponse(this, 'disagree', 'collaborative')">cancel</span>
+                        </div>
+                        <div class="response-animation"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-container">
+    <button class="submit-button" onclick="checkLogin()">Submit Survey</button>
+</div>
+            
+            <div class="results-container" id="resultsContainer" style="display: none;">
+    <h2 class="congratulations">Congratulations!</h2>
+    <p id="resultMessage" class="result-message"></p>
+    <div class="image-container" id="imageContainer"></div> <!-- Image container for communication styles -->
+    <p id="description" class="description"></p> <!-- Description for the results -->
+    <div class="fireworks" id="fireworks"></div>
+</div>
+
+        </div>
+        
+<!-- Login/Signup Modal -->
+<div id="authModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()" style="cursor:pointer;">&times;</span>
+        <h2 id="modalTitle">Login</h2>
+        <p id="modalMessage">Please log in to take the survey.</p>
+        <input type="text" id="username" placeholder="Enter your username" required aria-label="Username" pattern="^[a-zA-Z0-9_]{3,15}$" title="Username must be 3-15 characters long and can include letters, numbers, and underscores.">
+        <input type="password" id="password" placeholder="Enter your password" required aria-label="Password" pattern=".{6,}" title="Password must be at least 6 characters long.">
+        <div id="errorMessage" style="color: red; display: none;"></div> <!-- Error message -->
+        <div class="button-container">
+            <button id="loginButton" onclick="login()">Login</button>
+            <button id="signupButton" onclick="signup()" style="display: inline;">Signup</button>
+        </div>
+        <div class="social-login">
+            <p>Or connect with:</p>
+            <button class="social-button" onclick="connectWithFacebook()">
+                <span class="material-icons">facebook</span> Facebook
+            </button>
+            <button class="social-button" onclick="connectWithGoogle()">
+                <i class="fab fa-google"></i> Google
+            </button>
+        </div>
+        <div class="welcome-message" id="welcomeMessage"></div>
+        <p id="toggleText" onclick="toggleLoginSignup()">Don't have an account? Sign up</p>
+    </div>
+</div>
+
+<!-- Notification for logout success -->
+<div id="logoutNotification" class="notification" style="display: none;">
+    Your account has been logged out successfully.
+</div>
+
+    <script>
+
+let totalQuestionsPerSection = 5; // Total number of questions per section
+let totalSections = 5; // Total number of sections
+let responses = {
+    passive: 0,
+    assertive: 0,
+    aggressive: 0,
+    passiveAggressive: 0,
+    collaborative: 0
+}; // Counter for responses for each section
+let answeredQuestions = {
+    passive: new Set(),
+    assertive: new Set(),
+    aggressive: new Set(),
+    passiveAggressive: new Set(),
+    collaborative: new Set()
+}; // Track answered questions for each section
+
+const positiveWords = ["Great!", "Awesome!", "Fantastic!", "Excellent!", "Superb!", "Wonderful!", "Brilliant!", "Amazing!"];
+const negativeWords = [
+    "I understand",
+    "I see",
+    "I appreciate",
+    "I respect",
+    "I acknowledge",
+    "I recognize",
+    "I consider",
+    "I like"
+];
+
+// Define questions for each section
+const questions = {
+    passive: [
+        "I often avoid expressing my opinions during meetings.",
+        "I find it hard to say no to others.",
+        "I often feel overlooked in group discussions.",
+        "I often let others make decisions for me.",
+        "I often feel anxious about expressing my thoughts."
+    ],
+    assertive: [
+        "I express my opinions confidently.",
+        "I can say no without feeling guilty.",
+        "I actively participate in discussions.",
+        "I can express my needs clearly.",
+        "I stand up for my rights in a respectful way."
+    ],
+    aggressive: [
+        "I often interrupt others when they speak.",
+        "I often raise my voice when I am upset.",
+        "I often blame others for my problems.",
+        "I often use aggressive language when speaking.",
+        "I often try to dominate conversations."
+    ],
+    passiveAggressive: [
+        "I often give the silent treatment when I'm upset.",
+        "I often make sarcastic comments when I'm upset.",
+        "I often procrastinate when I don't want to do something.",
+        "I often make excuses when I don't want to do something.",
+        "I often avoid direct confrontation."
+    ],
+    collaborative: [
+        "I often seek input from others when making decisions.",
+        "I often try to find mutually beneficial solutions.",
+        "I often listen actively to others.",
+        "I often try to build consensus.",
+        "I often value the input of others."
+    ]
+};
+
+// Define which questions are positive and negative
+const positiveQuestions = [
+    "I express my opinions confidently.",
+    "I can say no without feeling guilty.",
+    "I actively participate in discussions.",
+    "I can express my needs clearly.",
+    "I stand up for my rights in a respectful way.",
+    "I often seek input from others when making decisions.",
+    "I often try to find mutually beneficial solutions.",
+    "I often listen actively to others.",
+    "I often try to build consensus.",
+    "I often value the input of others."
+];
+
+const negativeQuestions = [
+    "I often avoid expressing my opinions during meetings.",
+    "I find it hard to say no to others.",
+    "I often feel overlooked in group discussions.",
+    "I often let others make decisions for me.",
+    "I often feel anxious about expressing my thoughts.",
+    "I often interrupt others when they speak.",
+    "I often raise my voice when I am upset.",
+    "I often blame others for my problems.",
+    "I often use aggressive language when speaking.",
+    "I often try to dominate conversations.",
+    "I often give the silent treatment when I'm upset.",
+    "I often make sarcastic comments when I'm upset.",
+    "I often procrastinate when I don't want to do something.",
+    "I often make excuses when I don't want to do something.",
+    "I often avoid direct confrontation."
+];
+
+function handleResponse(element, responseType, section) {
+    const questionContainer = element.closest('.question-container');
+    const questionText = questionContainer.querySelector('p').innerText; // Get the question text
+    const questionIndex = Array.from(questionContainer.parentNode.children).indexOf(questionContainer);
+
+    // Check if the question has already been answered
+    if (answeredQuestions[section].has(questionIndex)) {
+        return; // Exit if already answered
+    }
+
+    answeredQuestions[section].add(questionIndex); // Mark question as answered
+
+    const agreeIcon = questionContainer.querySelector('.agree-icon');
+    const disagreeIcon = questionContainer.querySelector('.disagree-icon');
+    const animationDiv = questionContainer.querySelector('.response-animation');
+
+    // Reset colors
+    agreeIcon.style.color = '';
+    disagreeIcon.style.color = '';
+
+    // Determine if the question is positive or negative
+    const isPositive = positiveQuestions.includes(questionText);
+    const isNegative = negativeQuestions.includes(questionText);
+
+    // Change color based on response
+    if (responseType === 'agree') {
+        agreeIcon.style.color = 'green'; // Change color to green
+        if (isPositive) {
+            const randomPositiveWord = positiveWords[Math.floor(Math.random() * positiveWords.length)];
+            displayAnimation(animationDiv, randomPositiveWord); // Show positive word
+        } else if (isNegative) {
+            const randomNegativeWord = negativeWords[Math.floor(Math.random() * negativeWords.length)];
+            displayAnimation(animationDiv, randomNegativeWord); // Show understanding word
+        }
+    } else if (responseType === 'disagree') {
+        disagreeIcon.style.color = 'red'; // Change color to red
+        if (isPositive) {
+            const randomNegativeWord = negativeWords[Math.floor(Math.random() * negativeWords.length)];
+            displayAnimation(animationDiv, randomNegativeWord); // Show understanding word
+        } else if (isNegative) {
+            const randomPositiveWord = positiveWords[Math.floor(Math.random() * positiveWords.length)];
+            displayAnimation(animationDiv, randomPositiveWord); // Show positive word
+        }
+    }
+
+    // Increment response count for the specific section
+    responses[section]++;
+    updateProgressBar(section);
+}
+
+function displayAnimation(animationDiv, word) {
+    animationDiv.innerHTML = `<span class="animated-word">${word}</span>`; // Show the word
+    animationDiv.classList.add('animate'); // Add animation class
+
+    // Remove animation after a short delay
+    setTimeout(() => {
+        animationDiv.classList.remove('animate');
+        animationDiv.innerHTML = ''; // Clear the animation
+    }, 1000); // Adjust duration as needed
+}
+
+function updateProgressBar(section) {
+    const progressBar = document.getElementById(`progress-bar-${section}`);
+    const responseCount = document.getElementById(`response-count-${section}`);
+    
+    // Calculate the percentage of responses for the section
+    const percentage = (responses[section] / totalQuestionsPerSection) * 100;
+    
+    // Update the width of the progress bar
+    progressBar.style.width = percentage + '%';
+    
+    // Update the response count display
+    responseCount.textContent = `${responses[section]}/${totalQuestionsPerSection}`;
+    
+    // Change the color of the progress bar based on the number of responses
+    if (responses[section] === 1) {
+        progressBar.style.backgroundColor = 'red'; // 1 response
+    } else if (responses[section] === 2) {
+        progressBar.style.backgroundColor = 'orange'; // 2 responses
+    } else if (responses[section] >= 3 && responses[section] < 5) {
+        progressBar.style.backgroundColor = 'yellow'; // 3-4 responses
+    } else if (responses[section] === 5) {
+        progressBar.style.backgroundColor = 'green'; // 5 responses
+    }
+}
+
+function clearResponse(element, section) {
+    const questionContainer = element.closest('.question-container');
+    const agreeIcon = questionContainer.querySelector('.agree-icon');
+    const disagreeIcon = questionContainer.querySelector('.disagree-icon');
+    const animationDiv = questionContainer.querySelector('.response-animation');
+
+    // Reset colors and response tracking
+    agreeIcon.style.color = '';
+    disagreeIcon.style.color = '';
+    animationDiv.innerHTML = ''; // Clear the animation
+
+    // Remove the question from answered questions
+    const questionIndex = Array.from(questionContainer.parentNode.children).indexOf(questionContainer);
+    answeredQuestions[section].delete(questionIndex); // Remove from answered set
+
+    // Decrement response count for the specific section if it was previously counted
+    if (responses[section] > 0) {
+        responses[section]--;
+        updateProgressBar(section);
+    }
+}
+
+let isLoggedIn = false; // This variable should reflect the actual login state
+
+// Function to check if the user is logged in
+function checkLogin() {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'; // Check the session state
+    if (!isLoggedIn) {
+        alert('You must be logged in to submit the survey.'); // Alert the user
+        openModal(); // Open the login modal
+    } else {
+        submitSurvey(); // Call submitSurvey if logged in
+    }
+}
+
+// Check if user is already logged in on page load
+window.onload = function() {
+    const storedUsername = localStorage.getItem('username');
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'; // Check the session state
+
+    if (storedUsername && isLoggedIn) {
+        displayWelcomeMessage(storedUsername);
+        document.getElementById('authModal').style.display = 'none'; // Hide modal if user is logged in
+    } else {
+        document.getElementById('authModal').style.display = 'flex'; // Show modal if not logged in
+    }
+};
+
+    // Function to submit the survey
+    function submitSurvey() {
+        // Here you can handle the submission logic, e.g., sending data to a server
+        console.log('Survey submitted:', responses);
+        
+        // Clear local storage after submission
+        localStorage.removeItem('surveyResponses');
+        
+        // Determine the maximum number of "agree" responses
+        const maxCount = Math.max(...Object.values(responses));
+        
+        // Prepare the results message
+        const resultMessage = document.getElementById('resultMessage');
+        let resultsText = "Your dominant communication styles are:<br>";
+
+        const styles = {
+            passive: "Passive Communication Styles",
+            assertive: "Assertive Communication Styles",
+            aggressive: "Aggressive Communication Styles",
+            passiveAggressive: "Passive Aggressive Communication Styles",
+            collaborative: "Collaborative Communication Styles"
+        };
+
+        // Image URLs for each communication style
+        const styleImages = {
+            passive: "images/pass.png", // Replace with actual image paths
+            assertive: "images/asse.png",
+            aggressive: "images/agre.png",
+            passiveAggressive: "images/passA.png",
+            collaborative: "images/colab.png"
+        };
+
+        // Descriptions for each communication style
+        const styleDescriptions = {
+            passive: "Passive communicators often avoid expressing their opinions and may struggle to assert themselves. They tend to go along with others to avoid conflict.",
+            assertive: "Assertive communicators express their thoughts and feelings openly and respectfully. They balance their needs with the needs of others.",
+            aggressive: "Aggressive communicators express their opinions in a forceful manner, often disregarding others' feelings. They may dominate conversations and use intimidation.",
+            passiveAggressive: "Passive-aggressive communicators express their anger indirectly. They may agree to things but then act out in subtle ways to show their displeasure.",
+            collaborative: "Collaborative communicators work with others to find mutually beneficial solutions. They value input from all parties and strive for consensus."
+        };
+
+        // Collect styles with the maximum count
+        let displayedStyles = [];
+        for (const [key, value] of Object.entries(responses)) {
+            if (value === maxCount && value > 0) { // Only include styles with the max count and greater than 0
+                displayedStyles.push(styles[key]);
+            }
+        }
+
+        // Check if there are any styles to display
+        if (displayedStyles.length > 0) {
+            resultsText += displayedStyles.join("<br>");
+        } else {
+            resultsText += "No styles were agreed upon.";
+        }
+
+        // Display the results message
+        resultMessage.innerHTML = resultsText;
+
+        // Display corresponding images
+        const imageContainer = document.getElementById('imageContainer');
+        imageContainer.innerHTML = ''; // Clear previous images
+        displayedStyles.forEach(style => {
+            const styleKey = Object.keys(styles).find(key => styles[key] === style);
+            if (styleKey && styleImages[styleKey]) {
+                const img = document.createElement('img');
+                img.src = styleImages[styleKey];
+                img.alt = style; // Set alt text for accessibility
+                img.classList.add('pop-in'); // Add the pop-in class for animation
+                imageContainer.appendChild(img);
+            }
+        });
+
+        // Set a description based on the dominant styles
+        const description = document.getElementById('description');
+        if (displayedStyles.length > 0) {
+            const descriptionsToShow = displayedStyles.map(style => {
+                const styleKey = Object.keys(styles).find(key => styles[key] === style);
+                return styleDescriptions[styleKey];
+            });
+            description.innerHTML = descriptionsToShow.join("<br><br>"); // Display descriptions for each style
+        } else {
+            description.innerHTML = "It seems there were no dominant communication styles identified. Consider reflecting on your communication habits.";
+        }
+
+        // Show the results container
+        const resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.style.display = 'block';
+
+        // Scroll to the results container
+        resultsContainer.scrollIntoView({ behavior: 'smooth' }); // Smooth scroll to the results container
+
+        // Show fireworks animation
+        const fireworks = document.getElementById('fireworks');
+        fireworks.style.display = 'block';
+        fireworks.classList.add('animate'); // Add animation class
+
+        // Optionally, reset the responses object
+        responses = {
+            passive: 0,
+            assertive: 0,
+            aggressive: 0,
+            passiveAggressive: 0,
+            collaborative: 0
+        };
+    }
+
+        // Call loadFromLocalStorage when the page loads
+        window.onload = function() {
+            // Load responses from local storage if needed
+        };
+        
+function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.classList.toggle('open'); // Toggle the 'open' class for mobile devices
+    }
+
+function playVideo(videoId) {
+        const videoUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        const videoContainer = document.createElement('div');
+        videoContainer.innerHTML = `<iframe width="100%" height="315" src="${videoUrl}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        const content = document.querySelector('.content');
+        content.innerHTML = ''; // Clear existing content
+        content.appendChild(videoContainer); // Add the video
+    }
+    
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default anchor click behavior
+        const targetId = this.getAttribute('href'); // Get the target section ID
+        const targetElement = document.querySelector(targetId); // Select the target element
+        
+        // Scroll to the target element
+        window.scrollTo({
+          top: targetElement.offsetTop - 50, // Adjust for fixed header height
+          behavior: 'smooth' // Smooth scroll
+          });
+      });
+    });
+    
+function openModal() {
+    document.getElementById('authModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('authModal').style.display = 'none';
+}
+
+let isSignupMode = false; // Track whether the modal is in signup mode
+
+// Function to toggle between login and signup
+function toggleLoginSignup() {
+    isSignupMode = !isSignupMode; // Toggle the mode
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const signupButton = document.getElementById('signupButton');
+    const loginButton = document.getElementById('loginButton');
+    const toggleText = document.getElementById('toggleText');
+
+    if (isSignupMode) {
+        modalTitle.innerText = "Sign Up";
+        modalMessage.innerText = "Please create an account.";
+        signupButton.style.display = "inline"; // Show signup button
+        loginButton.style.display = "none"; // Hide login button
+        toggleText.innerText = "Already have an account? Login"; // Change toggle text
+    } else {
+        modalTitle.innerText = "Login";
+        modalMessage.innerText = "Please log in to take the survey.";
+        signupButton.style.display = "none"; // Hide signup button
+        loginButton.style.display = "inline"; // Show login button
+        toggleText.innerText = "Don't have an account? Sign up"; // Change toggle text
+    }
+}
+
+// Function to handle signup
+function signup() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('errorMessage');
+
+    // Validate input fields
+    if (!username || !password) {
+        errorMessage.innerText = "Please fill in both fields.";
+        errorMessage.style.display = 'block'; // Show error message
+        return; // Stop execution if validation fails
+    } else {
+        errorMessage.style.display = 'none'; // Hide error message if validation passes
+    }
+
+    // Save username to local storage
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password); // Optional: Save password (not recommended for security reasons)
+
+    // Display welcome message
+    displayWelcomeMessage(username);
+    closeModal(); // Close the modal after signup
+
+    // Automatically switch to login mode after successful signup
+    toggleLoginSignup(); // Switch to login mode
+}
+
+// Function to handle login
+function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('errorMessage');
+
+    // Validate input fields
+    if (!username || !password) {
+        errorMessage.innerText = "Please fill in both fields.";
+        errorMessage.style.display = 'block'; // Show error message
+        return; // Stop execution if validation fails
+    } else {
+        errorMessage.style.display = 'none'; // Hide error message if validation passes
+    }
+
+    // Check if the username and password match
+    const storedUsername = localStorage.getItem('username');
+    const storedPassword = localStorage.getItem('password');
+
+    if (username === storedUsername && password === storedPassword) {
+        // Set session flag
+        sessionStorage.setItem('isLoggedIn', 'true'); // Set session flag to indicate user is logged in
+
+        // Display welcome message
+        displayWelcomeMessage(username);
+        closeModal(); // Close the modal after login
+    } else {
+        errorMessage.innerText = "Invalid username or password.";
+        errorMessage.style.display = 'block'; // Show error message
+    }
+}
+
+// Function to display welcome message
+function displayWelcomeMessage(username) {
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    welcomeMessage.innerText = `Welcome, ${username}!`;
+    welcomeMessage.style.display = 'block'; // Show the welcome message
+}
+
+    // Function to connect with Facebook (placeholder)
+    function connectWithFacebook() {
+        // Implement Facebook login logic here
+        alert("Facebook login functionality is not implemented in this example.");
+    }
+
+    // Function to connect with Google (placeholder)
+    function connectWithGoogle() {
+        // Implement Google login logic here
+        alert("Google login functionality is not implemented in this example.");
+    }
+
+    // Check if user is already logged in
+    window.onload = function() {
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            displayWelcomeMessage(storedUsername);
+        } else {
+            document.getElementById('authModal').style.display = 'block'; // Show modal if not logged in
+        }
+    };
+
+// Function to handle logout
+function logout() {
+    // Clear session-related data
+    sessionStorage.removeItem('isLoggedIn'); // Remove session flag
+    localStorage.setItem('isLoggedIn', 'false'); // Optionally set a flag in local storage
+
+    // Show a logout success message
+    alert('You have been logged out successfully.');
+
+    // Reload the current page to reflect the logout
+    window.location.reload();
+}
+
+// Add event listener to the logout menu item
+document.getElementById('logoutButton').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default anchor behavior
+    logout(); // Call the logout function
+});
+
+
+// Add event listener to the logout menu item
+document.getElementById('logoutButton').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default anchor behavior
+    logout(); // Call the logout function
+});
+
+    </script>
+    
+</body>
+</html>
+                      
